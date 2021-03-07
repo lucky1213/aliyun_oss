@@ -1,10 +1,9 @@
 part of aliyun_oss;
 
-var http = DioUtils.getInstance();
+var _http = _DioUtils.getInstance();
 
-class DioUtils {
+class _DioUtils {
   static Dio _instance;
-  static CancelToken cancelToken;
 
   static Dio getInstance() {
     if (_instance == null) {

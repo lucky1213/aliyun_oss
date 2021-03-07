@@ -51,7 +51,7 @@ class OSSClient {
     ).toHeaders();
     try {
       final String url = 'https://$bucket.$endpoint/${object.name}';
-      await http.put<void>(
+      await _http.put<void>(
         url,
         data: Stream.fromIterable(object.bytes.map((e) => [e])),
         options: Options(
