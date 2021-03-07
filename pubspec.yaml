@@ -1,8 +1,7 @@
 name: aliyun_oss
 description: A new Flutter package project.
 version: 0.0.1
-author: lucky1213
-homepage: 
+homepage: https://github.com/lucky1213/aliyun_oss
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -12,12 +11,16 @@ dependencies:
   flutter:
     sdk: flutter
 
+  path: ^1.8.0
+  
+  http_parser: ^3.1.4
+
   crypto: ^2.1.5
 
   intl: ^0.16.1
 
   # A powerful Http client for Dart, which supports Interceptors, Global configuration, FormData, Request Cancellation, File downloading, Timeout etc.
-  dio: ^3.0.9
+  dio: ^3.0.10
 
   uuid: ^2.2.0
 
