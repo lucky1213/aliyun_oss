@@ -4,8 +4,8 @@ version: 0.0.1
 homepage: https://github.com/lucky1213/aliyun_oss
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
-  flutter: ">=1.17.0"
+  sdk: ">=2.10.0 <3.0.0"
+  flutter: ">=1.22.0"
 
 dependencies:
   flutter:
