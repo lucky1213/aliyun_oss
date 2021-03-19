@@ -19,7 +19,7 @@ class OSSClient {
   static OSSClient init({
     @required String endpoint,
     @required String bucket,
-    @required Future<Credentials> credentials,
+    @required Future<Credentials> Function() credentials,
   }) {
     _instance = OSSClient._(
       endpoint: endpoint,
@@ -35,7 +35,7 @@ class OSSClient {
 
   final String endpoint;
   final String bucket;
-  final Future<Credentials> credentials;
+  final Future<Credentials> Function() credentials;
 
   Future<OSSObject> putObject({
     @required OSSObject object,
@@ -78,7 +78,7 @@ class OSSClient {
     if (_signer == null ||
         (_signer?.credentials?.expiration?.isBefore(DateTime.now().toUtc()) ??
             true)) {
-      _signer = Signer(await credentials);
+      _signer = Signer(await credentials?.call());
     }
     return _signer;
   }
