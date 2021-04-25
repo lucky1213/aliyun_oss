@@ -37,20 +37,27 @@ class OSSClient {
   final String bucket;
   final Future<Credentials> Function() credentials;
 
+  /// * [bucket] [endpoint] 一次性生效
+  /// * [path] 上传路径 如不写则自动以 Object[type] [time] 生成path
   Future<OSSObject> putObject({
     @required OSSObject object,
+    String bucket,
+    String endpoint,
+    String path,
   }) async {
     _signer = await verify();
 
+    final String resourcePath = '${endpoint ?? this.endpoint}/${object.resourcePath(path)}';
+
     final Map<String, dynamic> safeHeaders = _signer.sign(
       httpMethod: 'PUT',
-      resourcePath: '/$bucket/${object.name}',
+      resourcePath: '/$resourcePath',
       headers: {
         'content-type': object.mediaType.mimeType,
       },
     ).toHeaders();
     try {
-      final String url = 'https://$bucket.$endpoint/${object.name}';
+      final String url = 'https://${bucket ?? this.bucket}.$resourcePath';
       await _http.put<void>(
         url,
         data: Stream.fromIterable(object.bytes.map((e) => [e])),

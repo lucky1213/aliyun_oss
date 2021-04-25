@@ -29,9 +29,7 @@ abstract class OSSObject {
     @required this.bytes,
     MediaType mediaType,
     this.uuid,
-  }) : _mediaType = mediaType ?? MediaType('application', 'octet-stream') {
-    _name = _rename();
-  }
+  }) : _mediaType = mediaType ?? MediaType('application', 'octet-stream');
 
   final Uint8List bytes;
 
@@ -40,25 +38,22 @@ abstract class OSSObject {
 
   final String uuid;
 
-  String _name;
-  String get name => _name;
-
   String url = '';
 
   int get size => bytes.lengthInBytes;
 
-  String _rename() {
-    final DateTime time = DateTime.now();
-    final String type = _mediaType == MediaType('application', 'octet-stream')
+  String get type => _mediaType == MediaType('application', 'octet-stream')
         ? 'file'
         : _mediaType.type;
 
-    return [
-      type,
-      DateFormat('y/MM/dd').format(time),
-      (uuid ?? Uuid().v1()) + (type == 'file' ? '' : '.${_mediaType.subtype}'),
-    ].join('/');
-  }
+  String get name => (uuid ?? Uuid().v1()) + (type == 'file' ? '' : '.${_mediaType.subtype}');
+
+  String get folderPath => [
+    type,
+    DateFormat('y/MM/dd').format(DateTime.now()),
+  ].join('/');
+
+  String resourcePath(String path) => '${path ?? folderPath}/$name';
 
   void uploadSuccessful(String url) {
     this.url = url;
