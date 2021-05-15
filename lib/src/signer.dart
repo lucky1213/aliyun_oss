@@ -3,42 +3,38 @@ part of aliyun_oss;
 class SignedInfo {
 
   const SignedInfo({
-    @required this.dateString,
-    @required this.accessKeyId,
-    @required this.signature,
+    required this.dateString,
+    required this.accessKeyId,
+    required this.signature,
     this.securityToken,
-  }): assert(dateString != null),
-      assert(accessKeyId != null),
-      assert(signature != null);
+  });
 
   final String dateString;
   final String accessKeyId;
   final String signature;
-  final String securityToken;
+  final String? securityToken;
 
   Map<String, String> toHeaders() => {
     'Date': dateString,
     'Authorization': 'OSS $accessKeyId:$signature',
-    if (securityToken != null) 'x-oss-security-token': securityToken,
+    if (securityToken != null) 'x-oss-security-token': securityToken!,
   };
 }
 
 class Signer {
 
-  const Signer(this.credentials): assert(credentials != null);
+  const Signer(this.credentials);
   final Credentials credentials;
 
   /// [dateString]  `Date` in [HttpDate] or `Expires` in [DateTime.secondsSinceEpoch]
   SignedInfo sign({
-    @required String httpMethod,
-    @required String resourcePath,
-    Map<String, String> parameters,
-    Map<String, String> headers,
-    String contentMd5,
-    String dateString,
+    required String httpMethod,
+    required String resourcePath,
+    Map<String, String>? parameters,
+    Map<String, String>? headers,
+    String? contentMd5,
+    String? dateString,
   }) {
-    assert(httpMethod != null);
-    assert(resourcePath != null);
 
     final securityHeaders = {
       if (headers != null) ...headers,
@@ -79,7 +75,7 @@ class Signer {
   }
 
   String _buildCanonicalizedResource(String resourcePath, Map<String, String> parameters) {
-    if (parameters?.isNotEmpty == true) {
+    if (parameters.isNotEmpty == true) {
       final queryString = _sortByLowerKey(parameters).map((e) => '${e.key}=${e.value}').join('&');
       return '$resourcePath?$queryString';
     }
