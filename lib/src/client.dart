@@ -47,7 +47,8 @@ class OSSClient {
   }) async {
     _signer = await verify();
 
-    final String resourcePath = '${endpoint ?? this.endpoint}/${object.resourcePath(path)}';
+    final String resourcePath =
+        '${endpoint ?? this.endpoint}/${object.resourcePath(path)}';
 
     final Map<String, dynamic> safeHeaders = _signer!.sign(
       httpMethod: 'PUT',
