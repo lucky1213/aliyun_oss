@@ -47,18 +47,17 @@ class OSSClient {
   }) async {
     _signer = await verify();
 
-    final String resourcePath =
-        '${endpoint ?? this.endpoint}/${object.resourcePath(path)}';
+    final String objectPath = object.resourcePath(path);
 
     final Map<String, dynamic> safeHeaders = _signer!.sign(
       httpMethod: 'PUT',
-      resourcePath: '/$resourcePath',
+      resourcePath: '/${bucket ?? this.bucket}/$objectPath',
       headers: {
         'content-type': object.mediaType.mimeType,
       },
     ).toHeaders();
     try {
-      final String url = 'https://${bucket ?? this.bucket}.$resourcePath';
+      final String url = 'https://${bucket ?? this.bucket}.${endpoint ?? this.endpoint}/$objectPath';
       await _http.put<void>(
         url,
         data: Stream.fromIterable(object.bytes.map((e) => [e])),

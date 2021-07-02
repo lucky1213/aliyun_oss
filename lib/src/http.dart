@@ -17,6 +17,5 @@ class _DioUtils {
   }
 
   static Dio? _instance;
-
-// ignore: use_late_for_private_fields_and_variables
+  // ignore: use_late_for_private_fields_and_variables
 }
