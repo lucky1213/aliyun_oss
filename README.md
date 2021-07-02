@@ -11,7 +11,7 @@ To use this plugin, add `aliyun_oss_flutter` as a [dependency in your pubspec.ya
 ### Example
 ``` dart
 import 'package:flutter/material.dart';
-import 'package:aliyun_oss_flutter/aliyun_oss.dart';
+import 'package:aliyun_oss_flutter/aliyun_oss_flutter.dart';
 
 void main() {
 
@@ -22,6 +22,11 @@ void main() {
     credentials: () {
       // Future Credentials
       return Credentials.fromJson(response.data);
+      // Or Credentials Config
+      return Credentials(
+        accessKeyId: 'xxxx',
+        accessKeySecret: 'xxxx',
+      );
     },
   );
 
