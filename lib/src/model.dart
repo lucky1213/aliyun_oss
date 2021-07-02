@@ -1,4 +1,4 @@
-part of aliyun_oss;
+part of aliyun_oss_flutter;
 
 class Credentials {
   Credentials({

@@ -1,4 +1,4 @@
-library aliyun_oss;
+library aliyun_oss_flutter;
 
 import 'dart:convert';
 import 'dart:io';
