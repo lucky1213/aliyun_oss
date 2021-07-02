@@ -4,24 +4,39 @@ class Credentials {
   Credentials({
     required this.accessKeyId,
     required this.accessKeySecret,
-    required this.securityToken,
-    required this.expiration,
-  });
+    this.securityToken,
+    this.expiration,
+  }) {
+    if (!useSecurityToken) {
+      clearSecurityToken();
+    }
+  }
 
   factory Credentials.fromJson(String str) =>
       Credentials.fromMap(json.decode(str) as Map<String, dynamic>);
 
-  factory Credentials.fromMap(Map<String, dynamic> json) => Credentials(
-        accessKeyId: json['access_key_id'] as String,
-        accessKeySecret: json['access_key_secret'] as String,
-        securityToken: json['security_token'] as String,
-        expiration: DateTime.parse(json['expiration'] as String),
-      );
+  factory Credentials.fromMap(Map<String, dynamic> json) {
+    return Credentials(
+      accessKeyId: json['access_key_id'] as String,
+      accessKeySecret: json['access_key_secret'] as String,
+      securityToken: json['security_token'] as String,
+      expiration: json['expiration'] != null
+          ? DateTime.parse(json['expiration'] as String)
+          : null,
+    );
+  }
 
   final String accessKeyId;
   final String accessKeySecret;
-  final String securityToken;
-  final DateTime expiration;
+  String? securityToken;
+  DateTime? expiration;
+
+  bool get useSecurityToken => securityToken != null && expiration != null;
+
+  void clearSecurityToken() {
+    securityToken = null;
+    expiration = null;
+  }
 }
 
 abstract class OSSObject {
@@ -43,15 +58,16 @@ abstract class OSSObject {
   int get size => bytes.lengthInBytes;
 
   String get type => _mediaType == MediaType('application', 'octet-stream')
-        ? 'file'
-        : _mediaType.type;
+      ? 'file'
+      : _mediaType.type;
 
-  String get name => (uuid ?? Uuid().v1()) + (type == 'file' ? '' : '.${_mediaType.subtype}');
+  String get name =>
+      (uuid ?? Uuid().v1()) + (type == 'file' ? '' : '.${_mediaType.subtype}');
 
   String get folderPath => [
-    type,
-    DateFormat('y/MM/dd').format(DateTime.now()),
-  ].join('/');
+        type,
+        DateFormat('y/MM/dd').format(DateTime.now()),
+      ].join('/');
 
   String resourcePath(String? path) => '${path ?? folderPath}/$name';
 

@@ -81,12 +81,21 @@ class OSSClient {
     }
   }
 
-  /// 不存在Signer 或则 已过期的
+  /// 验证检查
   Future<Signer> verify() async {
-    if (_signer == null ||
-        (_signer?.credentials.expiration.isBefore(DateTime.now().toUtc()) ??
-            true)) {
+    // 首次使用
+    if (_signer == null) {
       _signer = Signer(await credentials.call());
+    } else {
+      // 使用securityToken进行鉴权，则判断securityToken是否过期
+      if (_signer!.credentials.useSecurityToken) {
+        if (_signer!.credentials.expiration!.isBefore(DateTime.now().toUtc())) {
+          _signer = Signer(await credentials.call());
+        }
+      } else {
+        // expiration | securityToken中途丢失，则清空
+        _signer!.credentials.clearSecurityToken();
+      }
     }
     return _signer!;
   }
