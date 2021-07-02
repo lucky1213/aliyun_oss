@@ -2,13 +2,13 @@ part of aliyun_oss;
 
 class OSSClient {
   factory OSSClient() {
-    return _instance;
+    return _instance!;
   }
 
   OSSClient._({
-    @required this.endpoint,
-    @required this.bucket,
-    @required this.credentials,
+    required this.endpoint,
+    required this.bucket,
+    required this.credentials,
   }) {
     _signer = null;
   }
@@ -17,21 +17,21 @@ class OSSClient {
   /// * [credentials] 获取 `Credentials`
   /// * 一旦初始化，则`signer`清空，上传前会重新拉取oss信息
   static OSSClient init({
-    @required String endpoint,
-    @required String bucket,
-    @required Future<Credentials> Function() credentials,
+    required String endpoint,
+    required String bucket,
+    required Future<Credentials> Function() credentials,
   }) {
     _instance = OSSClient._(
       endpoint: endpoint,
       bucket: bucket,
       credentials: credentials,
     );
-    return _instance;
+    return _instance!;
   }
 
-  static OSSClient _instance;
+  static OSSClient? _instance;
 
-  Signer _signer;
+  Signer? _signer;
 
   final String endpoint;
   final String bucket;
@@ -40,16 +40,17 @@ class OSSClient {
   /// * [bucket] [endpoint] 一次性生效
   /// * [path] 上传路径 如不写则自动以 Object[type] [time] 生成path
   Future<OSSObject> putObject({
-    @required OSSObject object,
-    String bucket,
-    String endpoint,
-    String path,
+    required OSSObject object,
+    String? bucket,
+    String? endpoint,
+    String? path,
   }) async {
     _signer = await verify();
 
-    final String resourcePath = '${endpoint ?? this.endpoint}/${object.resourcePath(path)}';
+    final String resourcePath =
+        '${endpoint ?? this.endpoint}/${object.resourcePath(path)}';
 
-    final Map<String, dynamic> safeHeaders = _signer.sign(
+    final Map<String, dynamic> safeHeaders = _signer!.sign(
       httpMethod: 'PUT',
       resourcePath: '/$resourcePath',
       headers: {
@@ -83,10 +84,10 @@ class OSSClient {
   /// 不存在Signer 或则 已过期的
   Future<Signer> verify() async {
     if (_signer == null ||
-        (_signer?.credentials?.expiration?.isBefore(DateTime.now().toUtc()) ??
+        (_signer?.credentials.expiration.isBefore(DateTime.now().toUtc()) ??
             true)) {
-      _signer = Signer(await credentials?.call());
+      _signer = Signer(await credentials.call());
     }
-    return _signer;
+    return _signer!;
   }
 }
