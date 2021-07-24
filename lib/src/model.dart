@@ -55,7 +55,7 @@ abstract class OSSObject {
 
   String url = '';
 
-  int get size => bytes.lengthInBytes;
+  int get length => bytes.lengthInBytes;
 
   String get type => _mediaType == MediaType('application', 'octet-stream')
       ? 'file'
@@ -81,72 +81,56 @@ class OSSImageObject extends OSSObject {
   OSSImageObject._({
     required Uint8List bytes,
     required MediaType mediaType,
-    required this.width,
-    required this.height,
     String? uuid,
-    this.quality,
   }) : super._(bytes: bytes, mediaType: mediaType, uuid: uuid);
 
   factory OSSImageObject.fromBytes({
     required Uint8List bytes,
     required MediaType mediaType,
-    int quality = 60,
     String? uuid,
   }) {
-    final img.Image image = img.decodeImage(bytes)!;
-    if (quality < 100) {
-      try {
-        final List<int> compress = img.encodeJpg(image, quality: quality);
-        bytes = compress as Uint8List;
-        mediaType = MediaType('image', 'jpeg');
-      } catch (e) {
-        rethrow;
-      }
-    }
     return OSSImageObject._(
-      width: image.width,
-      height: image.height,
       bytes: bytes,
       mediaType: mediaType,
       uuid: uuid,
-      quality: quality,
     );
   }
 
   factory OSSImageObject.fromFile({
     required File file,
-    int quality = 60,
     String? uuid,
   }) {
-    Uint8List bytes = file.readAsBytesSync();
     String subtype = path.extension(file.path).toLowerCase();
     subtype = subtype.isNotEmpty ? subtype.replaceFirst('.', '') : '*';
-
-    MediaType mediaType = MediaType('image', subtype);
-
-    final img.Image image = img.decodeImage(bytes)!;
-    if (quality < 100) {
-      try {
-        final List<int> result = img.encodeJpg(image, quality: quality);
-        bytes = result as Uint8List;
-        mediaType = MediaType('image', 'jpeg');
-      } catch (e) {
-        rethrow;
-      }
-    }
     return OSSImageObject._(
-      width: image.width,
-      height: image.height,
-      bytes: bytes,
-      mediaType: mediaType,
+      bytes: file.readAsBytesSync(),
+      mediaType: MediaType('image', subtype),
       uuid: uuid,
-      quality: quality,
     );
   }
 
-  final int width;
-  final int height;
-  final int? quality;
+  late int _width;
+  late int _height;
+  int get width => _width;
+  int get height => _height;
+
+  void _decodeExif() {
+    img.Image image;
+    if (mediaType.subtype == 'jpg' || mediaType.subtype == 'jpeg') {
+      image = img.decodeJpg(bytes);
+    } else if (mediaType.subtype == 'png') {
+      image = img.decodePng(bytes)!;
+    } else if (mediaType.subtype == 'gif') {
+      image = img.decodeGif(bytes)!;
+    } else {
+      image = img.decodeImage(bytes)!;
+    }
+    _width = image.width;
+    _height = image.height;
+    if (image.exif.hasOrientation) {
+      print(image.exif.orientation);
+    }
+  }
 }
 
 /// * [length] 秒为单位
@@ -154,18 +138,18 @@ class OSSAudioObject extends OSSObject {
   OSSAudioObject._({
     required Uint8List bytes,
     required MediaType mediaType,
-    required this.length,
+    required this.duration,
     String? uuid,
   }) : super._(bytes: bytes, mediaType: mediaType, uuid: uuid);
 
   factory OSSAudioObject.fromBytes({
     required Uint8List bytes,
     required MediaType mediaType,
-    required int length,
+    required int duration,
     String? uuid,
   }) {
     return OSSAudioObject._(
-      length: length,
+      duration: duration,
       bytes: bytes,
       mediaType: mediaType,
       uuid: uuid,
@@ -174,21 +158,21 @@ class OSSAudioObject extends OSSObject {
 
   factory OSSAudioObject.fromFile({
     required File file,
-    required int length,
+    required int duration,
     String? uuid,
   }) {
     String subtype = path.extension(file.path).toLowerCase();
     subtype = subtype.isNotEmpty ? subtype.replaceFirst('.', '') : '*';
 
     return OSSAudioObject._(
-      length: length,
+      duration: duration,
       bytes: file.readAsBytesSync(),
       mediaType: MediaType('audio', subtype),
       uuid: uuid,
     );
   }
 
-  final int length;
+  final int duration;
 }
 
 /// * [length] 秒为单位
@@ -196,18 +180,18 @@ class OSSVideoObject extends OSSObject {
   OSSVideoObject._({
     required Uint8List bytes,
     required MediaType mediaType,
-    required this.length,
+    required this.duration,
     String? uuid,
   }) : super._(bytes: bytes, mediaType: mediaType, uuid: uuid);
 
   factory OSSVideoObject.fromBytes({
     required Uint8List bytes,
     required MediaType mediaType,
-    required int length,
+    required int duration,
     String? uuid,
   }) {
     return OSSVideoObject._(
-      length: length,
+      duration: duration,
       bytes: bytes,
       mediaType: mediaType,
       uuid: uuid,
@@ -216,19 +200,19 @@ class OSSVideoObject extends OSSObject {
 
   factory OSSVideoObject.fromFile({
     required File file,
-    required int length,
+    required int duration,
     String? uuid,
   }) {
     String subtype = path.extension(file.path).toLowerCase();
     subtype = subtype.isNotEmpty ? subtype.replaceFirst('.', '') : '*';
 
     return OSSVideoObject._(
-      length: length,
+      duration: duration,
       bytes: file.readAsBytesSync(),
       mediaType: MediaType('audio', subtype),
       uuid: uuid,
     );
   }
 
-  final int length;
+  final int duration;
 }

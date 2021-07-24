@@ -3,5 +3,6 @@
 ## [1.0.0] - add null-safety
 ## [1.0.1] - Fixed signing error due to resourcePath 
 ## [1.0.2] - Fix x-oss-security-token authentication
+## [1.0.3] - Fix image form file UI freeze & Remove image compress
 
 * TODO: Describe initial release.

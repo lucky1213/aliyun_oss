@@ -57,15 +57,20 @@ class OSSClient {
       },
     ).toHeaders();
     try {
-      final String url = 'https://${bucket ?? this.bucket}.${endpoint ?? this.endpoint}/$objectPath';
+      final String url =
+          'https://${bucket ?? this.bucket}.${endpoint ?? this.endpoint}/$objectPath';
+      final Uint8List bytes = object.bytes;
+      // if (object is OSSImageObject && !object.fullImage) {
+      //   bytes = MediaAssetUtils.compressImage(file);
+      // }
       await _http.put<void>(
         url,
-        data: Stream.fromIterable(object.bytes.map((e) => [e])),
+        data: Stream.fromIterable(bytes.map((e) => [e])),
         options: Options(
           headers: <String, dynamic>{
             ...safeHeaders,
             ...<String, dynamic>{
-              'content-length': object.size,
+              'content-length': object.length,
             }
           },
           contentType: object._mediaType.mimeType,
