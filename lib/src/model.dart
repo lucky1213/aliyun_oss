@@ -109,28 +109,29 @@ class OSSImageObject extends OSSObject {
     );
   }
 
-  late int _width;
-  late int _height;
-  int get width => _width;
-  int get height => _height;
+  // decodeImage UI
+  // late int _width;
+  // late int _height;
+  // int get width => _width;
+  // int get height => _height;
 
-  void _decodeExif() {
-    img.Image image;
-    if (mediaType.subtype == 'jpg' || mediaType.subtype == 'jpeg') {
-      image = img.decodeJpg(bytes);
-    } else if (mediaType.subtype == 'png') {
-      image = img.decodePng(bytes)!;
-    } else if (mediaType.subtype == 'gif') {
-      image = img.decodeGif(bytes)!;
-    } else {
-      image = img.decodeImage(bytes)!;
-    }
-    _width = image.width;
-    _height = image.height;
-    if (image.exif.hasOrientation) {
-      print(image.exif.orientation);
-    }
-  }
+  // void _decodeExif() {
+  //   img.Image image;
+  //   if (mediaType.subtype == 'jpg' || mediaType.subtype == 'jpeg') {
+  //     image = img.decodeJpg(bytes);
+  //   } else if (mediaType.subtype == 'png') {
+  //     image = img.decodePng(bytes)!;
+  //   } else if (mediaType.subtype == 'gif') {
+  //     image = img.decodeGif(bytes)!;
+  //   } else {
+  //     image = img.decodeImage(bytes)!;
+  //   }
+  //   _width = image.width;
+  //   _height = image.height;
+  //   if (image.exif.hasOrientation) {
+  //     print(image.exif.orientation);
+  //   }
+  // }
 }
 
 /// * [length] 秒为单位
@@ -138,18 +139,15 @@ class OSSAudioObject extends OSSObject {
   OSSAudioObject._({
     required Uint8List bytes,
     required MediaType mediaType,
-    required this.duration,
     String? uuid,
   }) : super._(bytes: bytes, mediaType: mediaType, uuid: uuid);
 
   factory OSSAudioObject.fromBytes({
     required Uint8List bytes,
     required MediaType mediaType,
-    required int duration,
     String? uuid,
   }) {
     return OSSAudioObject._(
-      duration: duration,
       bytes: bytes,
       mediaType: mediaType,
       uuid: uuid,
@@ -158,21 +156,17 @@ class OSSAudioObject extends OSSObject {
 
   factory OSSAudioObject.fromFile({
     required File file,
-    required int duration,
     String? uuid,
   }) {
     String subtype = path.extension(file.path).toLowerCase();
     subtype = subtype.isNotEmpty ? subtype.replaceFirst('.', '') : '*';
 
     return OSSAudioObject._(
-      duration: duration,
       bytes: file.readAsBytesSync(),
       mediaType: MediaType('audio', subtype),
       uuid: uuid,
     );
   }
-
-  final int duration;
 }
 
 /// * [length] 秒为单位
@@ -180,18 +174,15 @@ class OSSVideoObject extends OSSObject {
   OSSVideoObject._({
     required Uint8List bytes,
     required MediaType mediaType,
-    required this.duration,
     String? uuid,
   }) : super._(bytes: bytes, mediaType: mediaType, uuid: uuid);
 
   factory OSSVideoObject.fromBytes({
     required Uint8List bytes,
     required MediaType mediaType,
-    required int duration,
     String? uuid,
   }) {
     return OSSVideoObject._(
-      duration: duration,
       bytes: bytes,
       mediaType: mediaType,
       uuid: uuid,
@@ -200,19 +191,15 @@ class OSSVideoObject extends OSSObject {
 
   factory OSSVideoObject.fromFile({
     required File file,
-    required int duration,
     String? uuid,
   }) {
     String subtype = path.extension(file.path).toLowerCase();
     subtype = subtype.isNotEmpty ? subtype.replaceFirst('.', '') : '*';
 
     return OSSVideoObject._(
-      duration: duration,
       bytes: file.readAsBytesSync(),
       mediaType: MediaType('audio', subtype),
       uuid: uuid,
     );
   }
-
-  final int duration;
 }
