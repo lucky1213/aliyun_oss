@@ -99,6 +99,7 @@ class Signer {
   }
 
   String _requestTime() {
+    initializeDateFormatting('en', null);
     final DateTime now = DateTime.now();
     final String string =
         DateFormat('EEE, dd MMM yyyy HH:mm:ss', 'en_ISO').format(now.toUtc());
