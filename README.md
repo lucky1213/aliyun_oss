@@ -8,6 +8,14 @@ To use this plugin, add `aliyun_oss_flutter` as a [dependency in your pubspec.ya
 
 `OSSClient` is a static class
 
+## 压缩需求
+现版本已移除图片压缩、宽高获取，如需对视频、图片进行压缩可以使用[media_asset_utils](https://pub.flutter-io.cn/packages/media_asset_utils) 
+
+- [x] 视频硬编码压缩以及图片仿微信[Luban](https://github.com/Curzibn/Luban)压缩
+- [x] 视频缩略图获取
+- [x] 视频和图片的width、height、orientation等信息获取
+- [x] 保存到相册，支持Android Q+
+
 ### Example
 ``` dart
 import 'package:flutter/material.dart';
