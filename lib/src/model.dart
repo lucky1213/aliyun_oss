@@ -198,7 +198,7 @@ class OSSVideoObject extends OSSObject {
 
     return OSSVideoObject._(
       bytes: file.readAsBytesSync(),
-      mediaType: MediaType('audio', subtype),
+      mediaType: MediaType('video', subtype),
       uuid: uuid,
     );
   }
