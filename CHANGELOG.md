@@ -5,3 +5,4 @@
 ## [1.0.2] - Fix x-oss-security-token authentication
 ## [1.0.3] - Fix image form file UI freeze & Remove image compress
 ## [1.0.4] - Fix Uncaught LocaleDataException
+## [1.0.5] - Fix video media type

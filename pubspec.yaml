@@ -1,6 +1,6 @@
 name: aliyun_oss_flutter
 description: aliyun oss plugin for flutter. Use this plugin to upload files to aliyun oss.
-version: 1.0.4
+version: 1.0.5
 homepage: https://github.com/lucky1213/aliyun_oss
 
 environment:
