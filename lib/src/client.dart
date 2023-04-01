@@ -20,12 +20,16 @@ class OSSClient {
     required String endpoint,
     required String bucket,
     required Future<Credentials> Function() credentials,
+    Dio? dio,
   }) {
     _instance = OSSClient._(
       endpoint: endpoint,
       bucket: bucket,
       credentials: credentials,
     );
+    if (dio != null) {
+      _http = dio;
+    }
     return _instance!;
   }
 

@@ -1,28 +1,28 @@
 name: aliyun_oss_flutter
 description: aliyun oss plugin for flutter. Use this plugin to upload files to aliyun oss.
-version: 1.0.5
+version: 1.0.6
 homepage: https://github.com/lucky1213/aliyun_oss
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
-  flutter: ">=1.12.13+hotfix.5"
+  sdk: ">=2.17.0 <3.0.0"
+  flutter: ">=3.3.0"
 
 dependencies:
   flutter:
     sdk: flutter
 
-  path: ^1.8.0
-  
-  http_parser: ^4.0.0
+  path: ^1.8.2
 
-  crypto: ^3.0.1
+  http_parser: ^4.0.2
+
+  crypto: ^3.0.2
 
   intl: ^0.17.0
 
   # A powerful Http client for Dart, which supports Interceptors, Global configuration, FormData, Request Cancellation, File downloading, Timeout etc.
-  dio: ^4.0.0
+  dio: ^5.1.1
 
-  uuid: ^3.0.4
+  uuid: ^3.0.7
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
