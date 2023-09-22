@@ -62,7 +62,8 @@ abstract class OSSObject {
       : _mediaType.type;
 
   String get name =>
-      (uuid ?? Uuid().v1()) + (type == 'file' ? '' : '.${_mediaType.subtype}');
+      (uuid ?? const Uuid().v1()) +
+      (type == 'file' ? '' : '.${_mediaType.subtype}');
 
   String get folderPath => [
         type,

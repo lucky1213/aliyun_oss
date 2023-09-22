@@ -6,8 +6,8 @@ class _DioUtils {
   static Dio getInstance() {
     if (_instance == null) {
       _instance = Dio(BaseOptions(
-        connectTimeout: Duration(milliseconds: 1000 * 30),
-        receiveTimeout: Duration(milliseconds: 1000 * 30),
+        connectTimeout: const Duration(milliseconds: 1000 * 30),
+        receiveTimeout: const Duration(milliseconds: 1000 * 30),
       ));
 
       _instance!.interceptors.add(LogInterceptor(responseBody: true));

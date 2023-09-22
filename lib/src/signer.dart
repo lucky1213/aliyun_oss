@@ -43,7 +43,7 @@ class Signer {
     final contentType = sortedHeaders
         .firstWhere(
           (e) => e.key == 'content-type',
-          orElse: () => MapEntry('', ''),
+          orElse: () => const MapEntry('', ''),
         )
         .value;
     final canonicalizedOSSHeaders = sortedHeaders

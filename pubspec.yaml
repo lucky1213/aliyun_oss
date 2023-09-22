@@ -1,10 +1,10 @@
 name: aliyun_oss_flutter
 description: aliyun oss plugin for flutter. Use this plugin to upload files to aliyun oss.
-version: 1.0.6
+version: 1.1.0
 homepage: https://github.com/lucky1213/aliyun_oss
 
 environment:
-  sdk: ">=2.17.0 <3.0.0"
+  sdk: ">=2.17.0 <4.0.0"
   flutter: ">=3.3.0"
 
 dependencies:
@@ -23,6 +23,15 @@ dependencies:
   dio: ^5.1.1
 
   uuid: ^3.0.7
+
+dev_dependencies:
+
+  # The "flutter_lints" package below contains a set of recommended lints to
+  # encourage good coding practices. The lint set provided by the package is
+  # activated in the `analysis_options.yaml` file located at the root of your
+  # package. See that file for information about deactivating specific lint
+  # rules and activating additional ones.
+  flutter_lints: ^2.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
