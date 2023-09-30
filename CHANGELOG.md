@@ -8,3 +8,4 @@
 ## [1.0.5] - Fix video media type
 ## [1.0.6] - Upgrade sdk version
 ## [1.1.0] - Update analysis_options
+## [1.1.1] - Upgrade some package
